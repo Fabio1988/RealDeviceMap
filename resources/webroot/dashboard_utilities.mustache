@@ -41,6 +41,10 @@
                     onclick="return confirm('Are you sure that you want to delete {{stale_pokestops}} stale Pokestops that haven\'t been seen in the last 25 hours?');">
                     Delete Stale Pokestops {{#stale_pokestops}}({{stale_pokestops}} Not seen last 25 hours){{/stale_pokestops}}
                 </button>
+                <button type="submit" name="action" value="get_nameless_gyms" class="list-group-item list-group-item-action list-group-item-danger"
+                    onclick="return confirm('Are you sure that you want to query all gyms without name?');">
+                    Query all gyms without name
+                </button>
                 <input type="hidden" name="_csrf" value="{{csrf}}">
             </form>
         </div>
