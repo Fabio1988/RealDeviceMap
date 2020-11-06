@@ -1327,15 +1327,6 @@ class WebReqeustHandler {
                         data["show_error"] = true
                         data["error"] = "Failed to delete stale Pokestops."
                     }
-                case "get_nameless_gyms":
-                    do {
-                        let result = try Gym.getAllWithoutNameAsJson()
-                        data["show_success"] = true
-                        data["success"] = "\(result)"
-                    } catch {
-                        data["show_error"] = true
-                        data["error"] = "Failed to receive gyms without name."
-                    }
                 default:
                     break
                 }
