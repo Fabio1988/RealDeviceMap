@@ -1059,8 +1059,11 @@ class Gym: JSONConvertibleObject, WebHookEvent, Hashable {
 
             gyms.append(Gym(id: id,lat: lat,lon: lon,name: name,url: url))
         }
-        let json = try? JSONSerialization.jsonObject(with: gyms)
-        return json
+        return gyms
+    }
+
+    public static func getAllWithoutNameAsJson(mysql: MySQL?=nil) {
+        return try? JSONSerialization.jsonObject(with: Gym.getAllWithoutName())
     }
 
 }

@@ -1,4 +1,5 @@
 {{> header}}
+<script src="/dashboard_utilities.js"></script>
 <body>
 
     {{#show_error}}<br>{{/show_error}}
@@ -45,6 +46,11 @@
                     onclick="return confirm('Are you sure that you want to query all gyms without name?');">
                     Query all gyms without name
                 </button>
+                <button type="submit" name="action" id="importGymNames" value="set_nameless_gyms" class="list-group-item list-group-item-action list-group-item-danger"
+                    onclick="return confirm('Are you sure that you want to update all gyms without name?');">
+                    Update all gyms without name
+                </button>
+                <input type="file" id="importGymNamesFile" accept="text/csv" class="btn btn-primary" hidden>
                 <input type="hidden" name="_csrf" value="{{csrf}}">
             </form>
         </div>

@@ -1329,7 +1329,7 @@ class WebReqeustHandler {
                     }
                 case "get_nameless_gyms":
                     do {
-                        let result = try Gym.getAllWithoutName()
+                        let result = try Gym.getAllWithoutNameAsJson()
                         data["show_success"] = true
                         data["success"] = "\(result)"
                     } catch {
