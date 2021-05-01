@@ -74,6 +74,8 @@ internal class PVPStatsManager {
                 let pokemonInfo = data["pokemon"] as? [String: Any],
                 let pokemonName = pokemonInfo["uniqueId"] as? String,
                 let statsInfo = pokemonInfo["stats"] as? [String: Any],
+                let pokedexHeightM = pokemonInfo["pokedexHeightM"] as? Double,
+                let pokedexWeightKg = pokemonInfo["pokedexWeightKg"] as? Double,
                 let baseStamina = statsInfo["baseStamina"] as? Int,
                 let baseAttack = statsInfo["baseAttack"] as? Int,
                 let baseDefense = statsInfo["baseDefense"] as? Int {
@@ -102,7 +104,8 @@ internal class PVPStatsManager {
                     }
                 }
                 let stat = Stats(baseAttack: baseAttack, baseDefense: baseDefense,
-                                  baseStamina: baseStamina, evolutions: evolutions)
+                                  baseStamina: baseStamina, evolutions: evolutions,
+                                  baseHeight: pokedexHeightM, baseWeight: pokedexWeightKg)
                 stats[.init(pokemon: pokemon, form: form)] = stat
             }
         }
@@ -256,11 +259,20 @@ internal class PVPStatsManager {
         }
     }
 
+    internal func getBaseAndWeightForPokemon(pokemon: HoloPokemonId, form: PokemonDisplayProto.Form?)
+                                            -> (Double, Double) {
+        let pokemonWithForm = PokemonWithForm(pokemon: pokemon, form: form)
+        let stat = stats[pokemonWithForm]!
+        let baseWeight = stat.baseWeight
+        let baseHeight = stat.baseHeight
+        return (baseHeight, baseWeight)
+    }
+
     private func getPVPValue(iv: IV, level: Double, stats: Stats) -> Int {
-        let mutliplier = (PVPStatsManager.cpMultiplier[level] ?? 0)
-        let attack = Double(iv.attack + stats.baseAttack) * mutliplier
-        let defense = Double(iv.defense + stats.baseDefense) * mutliplier
-        let stamina = Double(iv.stamina + stats.baseStamina) * mutliplier
+        let multiplier = (PVPStatsManager.cpMultiplier[level] ?? 0)
+        let attack = Double(iv.attack + stats.baseAttack) * multiplier
+        let defense = Double(iv.defense + stats.baseDefense) * multiplier
+        let stamina = Double(iv.stamina + stats.baseStamina) * multiplier
         return Int(round(attack * defense * floor(stamina)))
     }
 
@@ -298,6 +310,8 @@ extension PVPStatsManager {
         var baseDefense: Int
         var baseStamina: Int
         var evolutions: [PokemonWithForm]
+        var baseHeight: Double
+        var baseWeight: Double
     }
 
     struct IV: Equatable {

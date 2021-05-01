@@ -2150,7 +2150,11 @@ function getPokemonPopupContent (pokemon) {
     content += '<b>Charge:</b> ' + getMoveName(pokemon.move_2) + '<br>'
   }
   if (pokemon.height !== null && pokemon.weight !== null) {
-    content += '<b>Size:</b> ' + getSize(pokemon.size) + ' | <b>Weight:</b> ' + Math.round(pokemon.weight) + 'kg<br>'
+    if (pokemon.baseHeight !== null && pokemon.baseWeight !== null) {
+      content += '<b>Size:</b> ' + Math.round(pokemon.size) + ' - ' + getSize(pokemon.size, pokemon.baseHeight) + ' | <b>Weight:</b> ' + Math.round(pokemon.weight) + ' - ' + getSize(pokemon.weight, pokemon.baseWeight) + '<br>'
+    } else {
+      content += '<b>Size:</b> ' + Math.round(pokemon.size) + 'm | <b>Weight:</b> ' + Math.round(pokemon.weight) + 'kg<br>'
+    }
   }
   if (pokemon.capture_1 !== null && pokemon.capture_2 !== null && pokemon.capture_3 !== null) {
     content += '<b>Catch Chances:</b><br>'
@@ -4116,12 +4120,20 @@ function getLureIconId (lureId) {
   return 1
 }
 
-function getSize (size) {
-  if (size < 1.5) return 'Tiny'
-  if (size <= 1.75) return 'Small'
-  if (size < 2.25) return 'Normal'
-  if (size <= 2.5) return 'Large'
-  return 'Big'
+function getSize (value, baseValue) {
+  let deviation = value - baseValue
+  let secondDeviation = baseValue*2/8
+  let absoluteDeviation = Math.abs(deviation)
+  let signDeviation = Math.sign(deviation)
+  if (absoluteDeviation >= secondDeviation) {
+    if (signDeviation > 0) {
+      return "XL"
+    } else {
+      return "XS"
+    }
+  } else {
+    return "N"
+  }
 }
 
 function getPokemonIdIconString(pokemonId, pokemonForm, pokemonEvolution) {
