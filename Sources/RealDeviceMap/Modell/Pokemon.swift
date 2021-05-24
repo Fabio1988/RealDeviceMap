@@ -54,7 +54,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
             "size": size as Any,
             "weather": weather as Any,
             "shiny": shiny as Any,
-            //"username": username as Any,
+            // "username": username as Any,
             "pokestop_id": pokestopId as Any,
             "costume": costume as Any,
             "updated": updated ?? 1,
@@ -211,8 +211,8 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         if wildPokemon.pokemon.hasPokemonDisplay {
             costume = wildPokemon.pokemon.pokemonDisplay.costume.rawValue.toUInt8()
             weather = wildPokemon.pokemon.pokemonDisplay.weatherBoostedCondition.rawValue.toUInt8()
-            //The wildPokemon and nearbyPokemon GMOs don't contain actual shininess.
-            //shiny = wildPokemon.pokemon.pokemonDisplay.shiny
+            // The wildPokemon and nearbyPokemon GMOs don't contain actual shininess.
+            // shiny = wildPokemon.pokemon.pokemonDisplay.shiny
         }
         self.username = username
 
@@ -272,8 +272,8 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         if nearbyPokemon.hasPokemonDisplay {
             costume = nearbyPokemon.pokemonDisplay.costume.rawValue.toUInt8()
             weather = nearbyPokemon.pokemonDisplay.weatherBoostedCondition.rawValue.toUInt8()
-            //The wildPokemon and nearbyPokemon GMOs don't contain actual shininess.
-            //shiny = wildPokemon.pokemonData.pokemonDisplay.shiny
+            // The wildPokemon and nearbyPokemon GMOs don't contain actual shininess.
+            // shiny = wildPokemon.pokemonData.pokemonDisplay.shiny
         }
         self.username = username
 
@@ -465,11 +465,12 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         if Pokemon.noPVP {
             return
         }
+		let gender = PokemonDisplayProto.Gender.init(rawValue: Int(self.gender ?? 0)) ?? .unset
         let costume = PokemonDisplayProto.Costume(rawValue: Int(self.costume ?? 0)) ?? .unset
-
         self.pvpRankingsGreatLeague = PVPStatsManager.global.getPVPStatsWithEvolutions(
             pokemon: pokemonID,
             form: form == .unset ? nil : form,
+            gender: gender == .unset ? nil : gender,
             costume: costume,
             iv: .init(attack: Int(self.atkIv!), defense: Int(self.defIv!), stamina: Int(self.staIv!)),
             level: Double(self.level!),
@@ -478,6 +479,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
             return [
                 "pokemon": ranking.pokemon.pokemon.rawValue,
                 "form": ranking.pokemon.form?.rawValue ?? 0,
+                "gender": ranking.pokemon.gender?.rawValue ?? 0,
                 "rank": ranking.response?.rank as Any,
                 "percentage": ranking.response?.percentage as Any,
                 "cp": ranking.response?.ivs.first?.cp as Any,
@@ -488,6 +490,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         self.pvpRankingsUltraLeague = PVPStatsManager.global.getPVPStatsWithEvolutions(
             pokemon: pokemonID,
             form: form == .unset ? nil : form,
+            gender: gender == .unset ? nil : gender,
             costume: costume,
             iv: .init(attack: Int(self.atkIv!), defense: Int(self.defIv!), stamina: Int(self.staIv!)),
             level: Double(self.level!),
@@ -496,6 +499,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
             return [
                 "pokemon": ranking.pokemon.pokemon.rawValue,
                 "form": ranking.pokemon.form?.rawValue ?? 0,
+                "gender": ranking.pokemon.gender?.rawValue ?? 0,
                 "rank": ranking.response?.rank as Any,
                 "percentage": ranking.response?.percentage as Any,
                 "cp": ranking.response?.ivs.first?.cp as Any,
