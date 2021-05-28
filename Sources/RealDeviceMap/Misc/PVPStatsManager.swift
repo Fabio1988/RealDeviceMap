@@ -269,10 +269,11 @@ internal class PVPStatsManager {
         }
     }
 
-    internal func getBaseAndWeightForPokemon(pokemon: HoloPokemonId, form: PokemonDisplayProto.Form?)
+    internal func getBaseAndWeightForPokemon(pokemon: HoloPokemonId, form: PokemonDisplayProto.Form?,
+                                             gender: PokemonDisplayProto.Gender?)
                                             -> (Double, Double) {
-        let pokemonWithForm = PokemonWithForm(pokemon: pokemon, form: form)
-        let stat = stats[pokemonWithForm]!
+        let pokemonWithFormAndGender = PokemonWithFormAndGender(pokemon: pokemon, form: form, gender: gender)
+        let stat = stats[pokemonWithFormAndGender]!
         let baseWeight = stat.baseWeight
         let baseHeight = stat.baseHeight
         return (baseHeight, baseWeight)

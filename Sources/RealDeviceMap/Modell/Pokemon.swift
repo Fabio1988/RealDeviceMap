@@ -456,16 +456,17 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
     private func setPVP() {
         let form = PokemonDisplayProto.Form.init(rawValue: Int(self.form ?? 0)) ?? .unset
         let pokemonID = HoloPokemonId(rawValue: Int(self.pokemonId)) ?? .missingno
+        let gender = PokemonDisplayProto.Gender.init(rawValue: Int(self.gender ?? 0)) ?? .unset
         let (baseHeight, baseWeight) = PVPStatsManager.global.getBaseAndWeightForPokemon(
                 pokemon: pokemonID,
-                form: form == .unset ? nil : form
+                form: form == .unset ? nil : form,
+                gender: gender == .unset ? nil : gender
         )
         self.baseHeight = baseHeight
         self.baseWeight = baseWeight
         if Pokemon.noPVP {
             return
         }
-        let gender = PokemonDisplayProto.Gender.init(rawValue: Int(self.gender ?? 0)) ?? .unset
         let costume = PokemonDisplayProto.Costume(rawValue: Int(self.costume ?? 0)) ?? .unset
         self.pvpRankingsGreatLeague = PVPStatsManager.global.getPVPStatsWithEvolutions(
             pokemon: pokemonID,
