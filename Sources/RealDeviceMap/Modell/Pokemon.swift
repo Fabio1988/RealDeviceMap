@@ -465,7 +465,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         if Pokemon.noPVP {
             return
         }
-		let gender = PokemonDisplayProto.Gender.init(rawValue: Int(self.gender ?? 0)) ?? .unset
+        let gender = PokemonDisplayProto.Gender.init(rawValue: Int(self.gender ?? 0)) ?? .unset
         let costume = PokemonDisplayProto.Costume(rawValue: Int(self.costume ?? 0)) ?? .unset
         self.pvpRankingsGreatLeague = PVPStatsManager.global.getPVPStatsWithEvolutions(
             pokemon: pokemonID,
